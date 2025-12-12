@@ -66,7 +66,7 @@
       border: 2px solid red;
       padding: 20px;
       z-index: 1000;
-      text-align: left; /* <-- alinhamento à esquerda */
+      text-align: left; /* alinhamento à esquerda */
       white-space: pre-line; /* mantém quebras de linha */
     }
     #popup button {
@@ -88,7 +88,6 @@
   </header>
 
   <div class="container">
-    <!-- Produtos -->
     <div class="card">
       <img src="" alt="Product image">
       <h3>POKZ01</h3>
@@ -126,7 +125,7 @@
     <br>
     <button onclick="payNow()">Pay Now</button>
     <button onclick="contactMe()">Contact Me</button>
-    <button onclick="clearCart()">Clear Cart</button> <!-- <-- novo botão -->
+    <button onclick="clearCart()">Clear Cart</button> <!-- botão novo -->
     <br>
     <input type="email" id="buyerEmail" placeholder="Your email">
     <br>
@@ -226,6 +225,4 @@
       let orderNumber = document.getElementById("orderNumber").innerText;
       if (!email) {
         alert("Please enter your email.");
-        return;
-      }
-      let subject = "KumodotDesign ORDER : " +
+       
