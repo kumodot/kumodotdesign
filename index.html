@@ -66,7 +66,8 @@
       border: 2px solid red;
       padding: 20px;
       z-index: 1000;
-      text-align: center;
+      text-align: left; /* <-- alinhamento à esquerda */
+      white-space: pre-line; /* mantém quebras de linha */
     }
     #popup button {
       margin: 10px;
@@ -87,26 +88,25 @@
   </header>
 
   <div class="container">
+    <!-- Produtos -->
     <div class="card">
       <img src="" alt="Product image">
       <h3>POKZ01</h3>
-      <p>The Best PocketOperator Case by Kumodot Design in a more affordable flavor. This one can be customized with a full color faceplate and one color for the buttons.</p>
+      <p>The Best PocketOperator Case...</p>
       <p>Cad$40.00</p>
       <button onclick="addToCart('POKZ-01', 40)">Add to Cart</button>
     </div>
     <div class="card">
       <img src="" alt="Product image">
       <h3>POKZ-02</h3>
-      <p>The Best PocketOperator Case by Kumodot Design.This uses multicolor printed faceplate, comes with thematic Buttons (customize or choose yours), 2 knobs and features
-        a protection bezel around the screen.</p>
+      <p>The Best PocketOperator Case...</p>
       <p>CAD$55.00</p>
       <button onclick="addToCart('POKZ-02', 55)">Add to Cart</button>
     </div>
     <div class="card">
       <img src="" alt="Product image">
       <h3>POKZ SHIELD</h3>
-      <p>Add Extra protection to your POCKET OPERATOR POKZ CASES with the shield. Beyond protection, it also avoids the Pocket Operator to keep turning itself when a button is 
-        acidentally pressed. Choose between Clear and Orange options</p>
+      <p>Add Extra protection...</p>
       <p>CAD$10.00</p>
       <button onclick="addToCart('POKZ-SHIELD', 10)">Add to Cart</button>
     </div>
@@ -126,6 +126,7 @@
     <br>
     <button onclick="payNow()">Pay Now</button>
     <button onclick="contactMe()">Contact Me</button>
+    <button onclick="clearCart()">Clear Cart</button> <!-- <-- novo botão -->
     <br>
     <input type="email" id="buyerEmail" placeholder="Your email">
     <br>
@@ -181,42 +182,37 @@
     }
 
     function payNow() {
-        if (cart.length === 0) {
-          alert("Your cart is empty!");
-          return;
-        }
-        let subtotal = cart.reduce((sum, item) => sum + item.price, 0);
-        let destination = document.getElementById("shipping").value;
-        let shipping = shippingRates[destination];
-        let total = subtotal + shipping;
-    
-        // Agrupar produtos iguais
-        let grouped = {};
-        cart.forEach(item => {
-          if (!grouped[item.name]) {
-            grouped[item.name] = {count: 0, price: item.price};
-          }
-          grouped[item.name].count++;
-        });
-    
-        // Montar descrição
-        let description = "";
-        for (let name in grouped) {
-          description += grouped[name].count + "x " + name + " (CAD$" + grouped[name].price + ")\n";
-        }
-        description += "Shipping cost (" + destination + "): CAD$" + shipping + "\n";
-        description += "Total: CAD$" + total;
-    
-        // Mostrar no popup
-        document.getElementById("popupText").innerText = description;
-        document.getElementById("popup").style.display = "block";
+      if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
       }
+      let subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+      let destination = document.getElementById("shipping").value;
+      let shipping = shippingRates[destination];
+      let total = subtotal + shipping;
 
+      let grouped = {};
+      cart.forEach(item => {
+        if (!grouped[item.name]) {
+          grouped[item.name] = {count: 0, price: item.price};
+        }
+        grouped[item.name].count++;
+      });
+
+      let description = "";
+      for (let name in grouped) {
+        description += grouped[name].count + "x " + name + " (CAD$" + grouped[name].price + ")\n";
+      }
+      description += "Shipping cost (" + destination + "): CAD$" + shipping + "\n";
+      description += "Total: CAD$" + total;
+
+      document.getElementById("popupText").innerText = description;
+      document.getElementById("popup").style.display = "block";
+    }
 
     function confirmPay() {
       let total = cart.reduce((sum, item) => sum + item.price, 0) +
                   shippingRates[document.getElementById("shipping").value];
-      // Replace with your PayPal link
       window.location.href = "https://www.paypal.com/paypalme/youraccount/" + total;
     }
 
@@ -232,15 +228,4 @@
         alert("Please enter your email.");
         return;
       }
-      let subject = "KumodotDesign ORDER : " + orderNumber;
-      let body = "Order details:\n" +
-                 cart.map(item => item.name + " - CAD$" + item.price).join("\n") +
-                 "\n\nNotes:\n" + notes +
-                 "\n\nBuyer email: " + email;
-      window.location.href = "mailto:marcelo@3donline.com.br?subject=" +
-                             encodeURIComponent(subject) +
-                             "&body=" + encodeURIComponent(body);
-    }
-  </script>
-</body>
-</html>
+      let subject = "KumodotDesign ORDER : " +
