@@ -3,22 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Products</title>
+  <title>KumodotDesign Shop</title>
   <style>
     body {
-      background-color: #2c2c2c; /* grafite claro */
+      background-color: #2c2c2c;
       font-family: Arial, sans-serif;
       color: #fff;
       margin: 0;
-      padding: 20px;
+      padding: 0;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      background-color: #1f1f1f;
+      border-bottom: 2px solid red;
+    }
+    .cart {
+      text-align: right;
+    }
+    .cart p {
+      margin: 2px 0;
     }
     .container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
+      padding: 20px;
     }
     .card {
-      background-color: #1f1f1f; /* cinza escuro */
+      background-color: #1f1f1f;
       border: 2px solid red;
       border-radius: 8px;
       padding: 15px;
@@ -27,14 +42,8 @@
     .card img {
       width: 100%;
       height: 150px;
-      background-color: #444; /* placeholder */
+      background-color: #444;
       margin-bottom: 10px;
-    }
-    .card h3 {
-      margin: 10px 0;
-    }
-    .card p {
-      margin: 5px 0;
     }
     .card button {
       background-color: red;
@@ -45,19 +54,28 @@
       border-radius: 4px;
     }
     .checkout {
-      margin-top: 30px;
       text-align: center;
+      padding: 20px;
     }
-    .checkout select, .checkout button {
+    .checkout select, .checkout button, .checkout input, .checkout textarea {
       padding: 10px;
       margin: 10px;
     }
   </style>
 </head>
 <body>
-  <h1>My Products</h1>
+  <header>
+    <h1>KumodotDesign Shop</h1>
+    <div class="cart" id="cartDisplay">
+      <p><strong>Order #:</strong> <span id="orderNumber">-</span></p>
+      <p><strong>Items:</strong> 0</p>
+      <p><strong>Subtotal:</strong> $0</p>
+      <p><strong>Shipping:</strong> $0</p>
+      <p><strong>Total:</strong> $0</p>
+    </div>
+  </header>
+
   <div class="container">
-    <!-- Product Card -->
     <div class="card">
       <img src="" alt="Product image">
       <h3>Product 1</h3>
@@ -65,7 +83,6 @@
       <p>$10.00</p>
       <button onclick="addToCart('Product 1', 10)">Add to Cart</button>
     </div>
-    <!-- Duplicate this block for more products -->
     <div class="card">
       <img src="" alt="Product image">
       <h3>Product 2</h3>
@@ -73,20 +90,26 @@
       <p>$15.00</p>
       <button onclick="addToCart('Product 2', 15)">Add to Cart</button>
     </div>
-    <!-- ... add more cards up to 6 -->
+    <!-- Duplicate more cards -->
   </div>
 
   <div class="checkout">
     <h2>Checkout</h2>
     <label for="shipping">Choose destination:</label>
-    <select id="shipping">
+    <select id="shipping" onchange="updateCart()">
       <option value="USA">USA (+$10)</option>
       <option value="Europe">Europe (+$15)</option>
       <option value="Asia">Asia (+$20)</option>
       <option value="Australia">Australia (+$25)</option>
       <option value="Germany">Germany (+$12)</option>
     </select>
-    <button onclick="checkout()">Buy Now</button>
+    <br>
+    <button onclick="payNow()">Pay Now</button>
+    <button onclick="contactMe()">Contact Me</button>
+    <br>
+    <input type="email" id="buyerEmail" placeholder="Your email">
+    <br>
+    <textarea id="buyerNotes" placeholder="Notes or questions about your order"></textarea>
   </div>
 
   <script>
@@ -99,28 +122,66 @@
       Germany: 12
     };
 
+    function generateOrderNumber() {
+      const now = new Date();
+      return now.getFullYear().toString() +
+             (now.getMonth()+1).toString().padStart(2,'0') +
+             now.getDate().toString().padStart(2,'0') +
+             now.getHours().toString().padStart(2,'0') +
+             now.getMinutes().toString().padStart(2,'0') +
+             now.getSeconds().toString().padStart(2,'0');
+    }
+
     function addToCart(name, price) {
       cart.push({name, price});
+      updateCart();
       alert(name + " added to cart!");
     }
 
-    function checkout() {
-      if (cart.length === 0) {
-        alert("Your cart is empty!");
-        return;
-      }
+    function updateCart() {
       let subtotal = cart.reduce((sum, item) => sum + item.price, 0);
       let destination = document.getElementById("shipping").value;
       let shipping = shippingRates[destination];
       let total = subtotal + shipping;
+      let orderNumber = generateOrderNumber();
 
-      alert("Subtotal: $" + subtotal +
-            "\nShipping (" + destination + "): $" + shipping +
-            "\nTotal: $" + total +
-            "\nProceeding to PayPal...");
-      
-      // Example PayPal link (replace with your own)
+      document.getElementById("orderNumber").innerText = orderNumber;
+      document.getElementById("cartDisplay").innerHTML =
+        `<p><strong>Order #:</strong> ${orderNumber}</p>
+         <p><strong>Items:</strong> ${cart.length}</p>
+         <p><strong>Subtotal:</strong> $${subtotal}</p>
+         <p><strong>Shipping:</strong> $${shipping}</p>
+         <p><strong>Total:</strong> $${total}</p>`;
+    }
+
+    function payNow() {
+      if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+      }
+      let total = cart.reduce((sum, item) => sum + item.price, 0) +
+                  shippingRates[document.getElementById("shipping").value];
+      alert("Redirecting to PayPal with total $" + total);
+      // Replace with your PayPal link
       window.location.href = "https://www.paypal.com/paypalme/youraccount/" + total;
+    }
+
+    function contactMe() {
+      let email = document.getElementById("buyerEmail").value;
+      let notes = document.getElementById("buyerNotes").value;
+      let orderNumber = document.getElementById("orderNumber").innerText;
+      if (!email) {
+        alert("Please enter your email.");
+        return;
+      }
+      let subject = "KumodotDesign ORDER : " + orderNumber;
+      let body = "Order details:\n" +
+                 cart.map(item => item.name + " - $" + item.price).join("\n") +
+                 "\n\nNotes:\n" + notes +
+                 "\n\nBuyer email: " + email;
+      window.location.href = "mailto:marcelo@3donline.com.br?subject=" +
+                             encodeURIComponent(subject) +
+                             "&body=" + encodeURIComponent(body);
     }
   </script>
 </body>
