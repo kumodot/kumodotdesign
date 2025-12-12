@@ -1,93 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KumodotDesign CASES</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KumodotDesign CASES</title>
 
-    <style>
-        body {
-            background-color: #2c2c2c;
-            font-family: Arial, sans-serif;
-            color: #fff;
-            margin: 0;
-            padding: 0;
-        }
+<style>
+    body {
+        background-color: #2c2c2c;
+        font-family: Arial, sans-serif;
+        color: #fff;
+        margin: 0;
+        padding: 0;
+    }
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            background-color: #1f1f1f;
-            border-bottom: 2px solid red;
-        }
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        background-color: #1f1f1f;
+        border-bottom: 2px solid red;
+    }
 
-        .cart p { margin: 2px 0; }
+    .cart p { margin: 2px 0; }
 
-        .container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            padding: 20px;
-        }
+    .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
 
-        .card {
-            background-color: #1f1f1f;
-            border: 2px solid red;
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-        }
+    .card {
+        background-color: #1f1f1f;
+        border: 2px solid red;
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+    }
 
-        .card img {
-            width: 100%;
-            height: 150px;
-            background-color: #444;
-            margin-bottom: 10px;
-        }
+    .card img {
+        width: 100%;
+        height: 150px;
+        background-color: #444;
+        margin-bottom: 10px;
+    }
 
-        .card button {
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
+    .card button {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
 
-        .checkout {
-            text-align: center;
-            padding: 20px;
-        }
+    .checkout {
+        text-align: center;
+        padding: 20px;
+    }
 
-        .checkout select,
-        .checkout button,
-        .checkout input,
-        .checkout textarea {
-            padding: 10px;
-            margin: 10px;
-        }
+    .checkout select,
+    .checkout button,
+    .checkout input,
+    .checkout textarea {
+        padding: 10px;
+        margin: 10px;
+    }
 
-        /* Popup */
-        #popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #1f1f1f;
-            border: 2px solid red;
-            padding: 20px;
-            z-index: 1000;
-            text-align: center;
-        }
+    /* Popup */
+    #popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #1f1f1f;
+        border: 2px solid red;
+        padding: 20px;
+        z-index: 1000;
+        text-align: left; /* ALTERAÇÃO FEITA AQUI */
+    }
 
-        #popup button {
-            margin: 10px;
-            padding: 10px 20px;
-        }
-    </style>
+    #popup button {
+        margin: 10px;
+        padding: 10px 20px;
+    }
+</style>
 </head>
 
 <body>
@@ -109,7 +109,7 @@
     <div class="card">
         <img src="" alt="Product image">
         <h3>POKZ01</h3>
-        <p>The Best PocketOperator Case by Kumodot Design in a more affordable flavor. This one can be customized with a full color faceplate and one color for the buttons.</p>
+        <p>The Best PocketOperator Case by Kumodot Design in a more affordable flavor.</p>
         <p>Cad$40.00</p>
         <button onclick="addToCart('POKZ-01', 40)">Add to Cart</button>
     </div>
@@ -117,7 +117,7 @@
     <div class="card">
         <img src="" alt="Product image">
         <h3>POKZ-02</h3>
-        <p>The Best PocketOperator Case by Kumodot Design. This uses multicolor printed faceplate, comes with thematic Buttons, 2 knobs and features protection bezel.</p>
+        <p>The Best PocketOperator Case by Kumodot Design.</p>
         <p>CAD$55.00</p>
         <button onclick="addToCart('POKZ-02', 55)">Add to Cart</button>
     </div>
@@ -144,11 +144,13 @@
         <option value="Australia">Australia (+CAD$15)</option>
         <option value="Germany">Germany (+CAD$12)</option>
     </select>
-
     <br>
 
     <button onclick="payNow()">Pay Now</button>
     <button onclick="contactMe()">Contact Me</button>
+
+    <!-- BOTÃO NOVO PARA LIMPAR O CARRINHO -->
+    <button onclick="clearCart()">Clear Cart</button>
 
     <br>
 
@@ -205,6 +207,12 @@
         document.getElementById("subtotal").innerText = "CAD$" + subtotal;
         document.getElementById("shippingCost").innerText = "CAD$" + shipping;
         document.getElementById("total").innerText = "CAD$" + total;
+    }
+
+    function clearCart() {
+        cart = [];
+        updateCart();
+        alert("Cart cleared!");
     }
 
     function payNow() {
