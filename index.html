@@ -11,9 +11,9 @@
             padding: 0;
             background-color: black;
             background-image: url("INDEX_BG_01.jpg");
-            background-repeat: repeat;
-            background-size: auto;
-            background-position: center;
+            background-repeat: no-repeat;
+            background-size: auto; /* imagem ORIGINAL, 1:1 */
+            background-position: center top; /* sempre centralizada */
             font-family: Arial, sans-serif;
             color: white;
             text-align: center;
@@ -22,11 +22,10 @@
         .bg-frame {
             width: 90vw;
             max-width: 450px;
-            margin: 10vh auto 0 auto;
+            margin: 25vh auto 0 auto; /* desce para ficar visivel com bg central */
             padding: 30px;
-            background-color: rgba(0, 0, 0, 0.4);
+            background-color: rgba(0, 0, 0, 0.65); /* mais escuro para garantir leitura */
             border-radius: 18px;
-            backdrop-filter: blur(3px);
         }
 
         .section-title {
@@ -46,4 +45,48 @@
             border-radius: 12px;
             font-size: 18px;
             cursor: pointer;
-            text
+            text-decoration: none;
+            transition: 0.25s ease;
+        }
+
+        .btn:hover {
+            border-color: red;
+            color: red;
+        }
+
+        .info {
+            margin-top: 30px;
+            font-size: 16px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-frame">
+
+        <div class="section-title">HOW TO ORDER:</div>
+
+        <a class="btn"
+           href="https://www.instagram.com/kumodotdesign"
+           target="_blank"
+           title="Send me a private message on Instagram, and I can get your custom order and send a Paypal link for payment.">
+            POKZ INSTAGRAM
+        </a>
+
+        <a class="btn"
+           href="https://www.instagram.com/msouza3d"
+           target="_blank"
+           title="Send me a private message on Instagram, and I can get your custom order and send a Paypal link for payment.">
+            CREATOR's INSTAGRAM
+        </a>
+
+        <p class="info">
+            GET IN TOUCH OVER INSTAGRAM MESSAGE TO CUSTOMIZE YOUR ORDER AND PAY BY PAYPAL.
+        </p>
+
+    </div>
+
+</body>
+</html>
