@@ -170,22 +170,37 @@
     }
 
     function payNow() {
-      if (cart.length === 0) {
-        alert("Your cart is empty!");
-        return;
+        if (cart.length === 0) {
+          alert("Your cart is empty!");
+          return;
+        }
+        let subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+        let destination = document.getElementById("shipping").value;
+        let shipping = shippingRates[destination];
+        let total = subtotal + shipping;
+    
+        // Agrupar produtos iguais
+        let grouped = {};
+        cart.forEach(item => {
+          if (!grouped[item.name]) {
+            grouped[item.name] = {count: 0, price: item.price};
+          }
+          grouped[item.name].count++;
+        });
+    
+        // Montar descrição
+        let description = "";
+        for (let name in grouped) {
+          description += grouped[name].count + "x " + name + " (CAD$" + grouped[name].price + ")\n";
+        }
+        description += "Shipping cost (" + destination + "): CAD$" + shipping + "\n";
+        description += "Total: CAD$" + total;
+    
+        // Mostrar no popup
+        document.getElementById("popupText").innerText = description;
+        document.getElementById("popup").style.display = "block";
       }
-      let subtotal = cart.reduce((sum, item) => sum + item.price, 0);
-      let destination = document.getElementById("shipping").value;
-      let shipping = shippingRates[destination];
-      let total = subtotal + shipping;
 
-      document.getElementById("popupText").innerText =
-        "Subtotal: CAD$" + subtotal +
-        "\nShipping (" + destination + "): CAD$" + shipping +
-        "\nTotal: CAD$" + total +
-        "\n\nProceed to PayPal?";
-      document.getElementById("popup").style.display = "block";
-    }
 
     function confirmPay() {
       let total = cart.reduce((sum, item) => sum + item.price, 0) +
