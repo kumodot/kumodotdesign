@@ -20,12 +20,7 @@
       background-color: #1f1f1f;
       border-bottom: 2px solid red;
     }
-    .cart {
-      text-align: right;
-    }
-    .cart p {
-      margin: 2px 0;
-    }
+    .cart p { margin: 2px 0; }
     .container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -61,17 +56,33 @@
       padding: 10px;
       margin: 10px;
     }
+    /* Popup */
+    #popup {
+      display: none;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: #1f1f1f;
+      border: 2px solid red;
+      padding: 20px;
+      z-index: 1000;
+      text-align: center;
+    }
+    #popup button {
+      margin: 10px;
+      padding: 10px 20px;
+    }
   </style>
 </head>
 <body>
   <header>
     <h1>KumodotDesign Shop</h1>
-    <div class="cart" id="cartDisplay">
+    <div class="cart">
       <p><strong>Order #:</strong> <span id="orderNumber">-</span></p>
-      <p><strong>Items:</strong> 0</p>
-      <p><strong>Subtotal:</strong> $0</p>
-      <p><strong>Shipping:</strong> $0</p>
-      <p><strong>Total:</strong> $0</p>
+      <p><strong>Items:</strong> <span id="itemsCount">0</span></p>
+      <p><strong>Subtotal:</strong> <span id="subtotal">CAD$0</span></p>
+      <p><strong>Shipping:</strong> <span id="shippingCost">CAD$0</span></p>
+      <p><strong>Total:</strong> <span id="total">CAD$0</span></p>
     </div>
   </header>
 
@@ -80,28 +91,27 @@
       <img src="" alt="Product image">
       <h3>Product 1</h3>
       <p>Description of product 1</p>
-      <p>$10.00</p>
+      <p>CAD$10.00</p>
       <button onclick="addToCart('Product 1', 10)">Add to Cart</button>
     </div>
     <div class="card">
       <img src="" alt="Product image">
       <h3>Product 2</h3>
       <p>Description of product 2</p>
-      <p>$15.00</p>
+      <p>CAD$15.00</p>
       <button onclick="addToCart('Product 2', 15)">Add to Cart</button>
     </div>
-    <!-- Duplicate more cards -->
   </div>
 
   <div class="checkout">
     <h2>Checkout</h2>
     <label for="shipping">Choose destination:</label>
     <select id="shipping" onchange="updateCart()">
-      <option value="USA">USA (+$10)</option>
-      <option value="Europe">Europe (+$15)</option>
-      <option value="Asia">Asia (+$20)</option>
-      <option value="Australia">Australia (+$25)</option>
-      <option value="Germany">Germany (+$12)</option>
+      <option value="USA">USA (+CAD$10)</option>
+      <option value="Europe">Europe (+CAD$15)</option>
+      <option value="Asia">Asia (+CAD$20)</option>
+      <option value="Australia">Australia (+CAD$25)</option>
+      <option value="Germany">Germany (+CAD$12)</option>
     </select>
     <br>
     <button onclick="payNow()">Pay Now</button>
@@ -110,6 +120,13 @@
     <input type="email" id="buyerEmail" placeholder="Your email">
     <br>
     <textarea id="buyerNotes" placeholder="Notes or questions about your order"></textarea>
+  </div>
+
+  <!-- Popup -->
+  <div id="popup">
+    <p id="popupText"></p>
+    <button onclick="confirmPay()">Confirm</button>
+    <button onclick="cancelPay()">Cancel</button>
   </div>
 
   <script>
@@ -146,12 +163,10 @@
       let orderNumber = generateOrderNumber();
 
       document.getElementById("orderNumber").innerText = orderNumber;
-      document.getElementById("cartDisplay").innerHTML =
-        `<p><strong>Order #:</strong> ${orderNumber}</p>
-         <p><strong>Items:</strong> ${cart.length}</p>
-         <p><strong>Subtotal:</strong> $${subtotal}</p>
-         <p><strong>Shipping:</strong> $${shipping}</p>
-         <p><strong>Total:</strong> $${total}</p>`;
+      document.getElementById("itemsCount").innerText = cart.length;
+      document.getElementById("subtotal").innerText = "CAD$" + subtotal;
+      document.getElementById("shippingCost").innerText = "CAD$" + shipping;
+      document.getElementById("total").innerText = "CAD$" + total;
     }
 
     function payNow() {
@@ -159,11 +174,28 @@
         alert("Your cart is empty!");
         return;
       }
+      let subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+      let destination = document.getElementById("shipping").value;
+      let shipping = shippingRates[destination];
+      let total = subtotal + shipping;
+
+      document.getElementById("popupText").innerText =
+        "Subtotal: CAD$" + subtotal +
+        "\nShipping (" + destination + "): CAD$" + shipping +
+        "\nTotal: CAD$" + total +
+        "\n\nProceed to PayPal?";
+      document.getElementById("popup").style.display = "block";
+    }
+
+    function confirmPay() {
       let total = cart.reduce((sum, item) => sum + item.price, 0) +
                   shippingRates[document.getElementById("shipping").value];
-      alert("Redirecting to PayPal with total $" + total);
       // Replace with your PayPal link
       window.location.href = "https://www.paypal.com/paypalme/youraccount/" + total;
+    }
+
+    function cancelPay() {
+      document.getElementById("popup").style.display = "none";
     }
 
     function contactMe() {
@@ -176,7 +208,7 @@
       }
       let subject = "KumodotDesign ORDER : " + orderNumber;
       let body = "Order details:\n" +
-                 cart.map(item => item.name + " - $" + item.price).join("\n") +
+                 cart.map(item => item.name + " - CAD$" + item.price).join("\n") +
                  "\n\nNotes:\n" + notes +
                  "\n\nBuyer email: " + email;
       window.location.href = "mailto:marcelo@3donline.com.br?subject=" +
