@@ -1,92 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KumodotDesign</title>
+  <meta charset="UTF8">
+  <title>Kumodot Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: black;
-            background-image: url("INDEX_BG_03.jpg");
-            background-repeat: no-repeat;
-            background-size: auto; /* imagem ORIGINAL, 1:1 */
-            background-position: center top; /* sempre centralizada */
-            font-family: Arial, sans-serif;
-            color: white;
-            text-align: center;
-        }
+  <!-- PayPal Cart script -->
+  <script src="https://www.paypalobjects.com/ncp/cart/cart.js" data-merchant-id="E4VU7A6A4DAU8"></script>
 
-        .bg-frame {
-            width: 90vw;
-            max-width: 450px;
-            margin: 51vh auto 0 auto; /* desce para ficar visivel com bg central */
-            padding: 30px;
-            background-color: rgba(0, 0, 0, 0.15); /* mais escuro para garantir leitura */
-            border-radius: 18px;
-        }
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, Arial, sans-serif;
+      background: #000000;
+      color: #ffffff;
+      text-align: center;
+    }
 
-        .section-title {
-            font-size: 22px;
-            margin-bottom: 25px;
-            font-weight: bold;
-        }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 16px;
+    }
 
-        .btn {
-            display: block;
-            width: 260px;
-            margin: 15px auto;
-            padding: 15px;
-            background-color: black;
-            color: white;
-            border: 2px solid white;
-            border-radius: 12px;
-            font-size: 18px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: 0.25s ease;
-        }
+    .product {
+      margin-top: 32px;
+    }
 
-        .btn:hover {
-            border-color: red;
-            color: red;
-        }
+    .product img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+    }
 
-        .info {
-            margin-top: 30px;
-            font-size: 16px;
-            line-height: 1.4;
-        }
-    </style>
+    header {
+      margin-bottom: 24px;
+    }
+  </style>
 </head>
-
 <body>
 
-    <div class="bg-frame">
+  <!-- View Cart button -->
+  <header>
+    <paypal-cart-button data-id="pp-view-cart"></paypal-cart-button>
+    <script>
+      cartPaypal.Cart({ id: "pp-view-cart" })
+    </script>
+  </header>
 
-        <div class="section-title">ORDER YOUR CASE:</div>
+  <main class="container">
+    <h1>POKZ 02 Pocket Operator Case</h1>
+    <p>Premium custom case for Teenage Engineering Pocket Operators.</p>
 
-        <a class="btn"
-           href="https://www.instagram.com/m/kumodotdesign"
-           target="_blank"
-           title="Click to send me a private message on Instagram, so I can get your custom order and create a Paypal link for payment.">
-            POKZ INSTAGRAM
-        </a>
+    <div class="product">
+      <img src="images/pokz02_main.jpg" alt="POKZ 02 Pocket Operator Case">
 
-        <a class="btn"
-           href="https://www.instagram.com/m/msouza3d/"
-           target="_blank"
-           title="Click to send me a private message on Instagram, so I can get your custom order and create a Paypal link for payment.">
-            CREATOR's INSTAGRAM
-        </a>
-
-        <p class="info">
-            GET IN TOUCH OVER INSTAGRAM MESSAGE TO CUSTOMIZE YOUR ORDER AND PAY BY PAYPAL. 💪
-        </p>
-
+      <!-- Add to Cart button -->
+      <div style="margin-top: 16px;">
+        <paypal-add-to-cart-button data-id="L5RHHZSVML8YG"></paypal-add-to-cart-button>
+        <script>
+          cartPaypal.AddToCart({ id: "L5RHHZSVML8YG" })
+        </script>
+      </div>
     </div>
+  </main>
 
 </body>
 </html>
