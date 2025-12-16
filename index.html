@@ -41,6 +41,27 @@
 </head>
 <body>
 
+<script>
+  // Set true to enable Maintenance Mode
+  const MAINTENANCE_MODE = true;
+
+  window.addEventListener("DOMContentLoaded", () => {
+    if (MAINTENANCE_MODE) {
+      document.body.innerHTML = `
+        <div style="color:white; font-family:system-ui; padding:40px; text-align:center;">
+          <h1>Site under maintenance</h1>
+          <p>To get in touch, visit my instagram:</p>
+          <a href="https://www.instagram.com/kumodotdesign" 
+             style="color:#ff5555; font-size:20px;">
+             instagram.com/kumodotdesign
+          </a>
+        </div>
+      `;
+    }
+  });
+</script>
+
+  
   <!-- View Cart button -->
   <header>
     <paypal-cart-button data-id="pp-view-cart"></paypal-cart-button>
